@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>eVTOL Flight Simulator</title>
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.0/dist/maplibre-gl.css">
+
+<script src="https://cdn.jsdelivr.net/npm/maplibre-gl@3.6.0/dist/maplibre-gl.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+<canvas id="c"></canvas>
+
+<!-- HUD -->
+<div id="hud">
+  <div class="panel">
+    <span>高度</span>
+    <b id="alt">0 m</b>
+  </div>
+
+  <div class="panel">
+    <span>速度</span>
+    <b id="spd">0 km/h</b>
+  </div>
+
+  <div class="panel">
+    <span>BATTERY</span>
+    <b id="batteryHud">100 %</b>
+  </div>
+
+  <div class="panel">
+    <span>TIME</span>
+    <b id="timeText">0:00</b>
+  </div>
+
+  <div class="panel">
+    <span>WP</span>
+    <b id="wpText">0/0</b>
+  </div>
+</div>
+
+<!-- Battery -->
+<div id="batteryBox">
+  <div class="batteryHeader">
+    <span>BATTERY</span>
+    <b id="batteryText">100%</b>
+  </div>
+  <div class="batteryBarBg">
+    <div id="batteryBar"></div>
+  </div>
+</div>
+
+<!-- ナビ矢印 -->
+<div id="navArrowWrap">
+  <div id="navArrow"></div>
+  <div id="navLabel">NEXT</div>
+</div>
+
+<!-- ミニマップ -->
+<div id="miniWrap">
+  <div id="miniMap"></div>
+
+  <div class="row">
+    <input id="place" type="text" placeholder="Tokyo">
+    <button id="searchBtn">検索</button>
+  </div>
+
+  <div class="row">
+    <input id="lat" type="number" step="0.000001">
+    <input id="lon" type="number" step="0.000001">
+  </div>
+
+  <div class="row">
+    <select id="groundStyle">
+      <option value="osm">OSM</option>
+      <option value="sat">衛星</option>
+    </select>
+    <input id="radius" type="number" value="900">
+  </div>
+
+  <div class="row">
+    <button id="loadFreeBtn">この場所でフリーフライト</button>
+  </div>
+</div>
+
+<!-- タイトル -->
+<div id="titleScr" class="screen">
+  <h1>eVTOL Simulator</h1>
+  <button id="startMissionBtn" class="btn">ミッション開始</button>
+  <button id="startFreeBtn" class="btn">フリーフライト</button>
+
+  <div class="titleHelp">
+    <div>PC: マウス移動＝姿勢 / 左右クリック＝ヨー / Space・Shift＝上昇下降</div>
+    <div>モバイル: 右パッド＝姿勢 / 左ボタン＝ヨー・上昇下降</div>
+  </div>
+</div>
+
+<!-- 情報 -->
+<div id="infoBubble">
+  <div id="infoTitle"></div>
+  <div id="infoBody"></div>
+</div>
+
+<!-- モバイル操作UI -->
+<div id="mobileUI">
+  <div id="mobileLeft">
+    <div class="mobileGrid">
+      <button id="btnYawLeft" class="mBtn">⟲</button>
+      <button id="btnAscend" class="mBtn mBtnTall">▲</button>
+      <button id="btnYawRight" class="mBtn">⟳</button>
+      <button id="btnBrake" class="mBtn">BRAKE</button>
+      <button id="btnDescend" class="mBtn mBtnTall">▼</button>
+      <button id="btnReset" class="mBtn">RESET</button>
+    </div>
+  </div>
+
+  <div id="mobileRight">
+    <div id="touchPad">
+      <div id="touchPadLabel">TOUCH PAD</div>
+      <div id="touchDot"></div>
+    </div>
+  </div>
+</div>
+
+<script src="./main.js"></script>
+
+</body>
+</html>

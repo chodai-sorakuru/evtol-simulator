@@ -1,0 +1,486 @@
+html, body{
+margin:0;
+padding:0;
+overflow:hidden;
+font-family:Arial, Helvetica, sans-serif;
+background:#6b8ea5;
+touch-action:none;
+overscroll-behavior:none;
+}
+
+body{
+position:fixed;
+inset:0;
+width:100%;
+height:100%;
+-webkit-user-select:none;
+user-select:none;
+-webkit-touch-callout:none;
+}
+
+canvas{
+display:block;
+width:100vw;
+height:100vh;
+}
+
+/* =========================
+   HUD
+========================= */
+
+#hud{
+position:fixed;
+top:10px;
+left:50%;
+transform:translateX(-50%);
+display:flex;
+gap:14px;
+z-index:20;
+flex-wrap:wrap;
+justify-content:center;
+pointer-events:none;
+max-width:calc(100vw - 20px);
+}
+
+.panel{
+background:rgba(0,0,0,0.65);
+padding:8px 14px;
+border-radius:8px;
+color:white;
+min-width:110px;
+text-align:center;
+backdrop-filter:blur(4px);
+box-shadow:0 4px 16px rgba(0,0,0,0.2);
+}
+
+.panel span{
+font-size:11px;
+opacity:0.82;
+display:block;
+}
+
+.panel b{
+font-size:18px;
+display:block;
+}
+
+/* =========================
+   バッテリー
+========================= */
+
+#batteryBox{
+position:fixed;
+right:20px;
+bottom:20px;
+background:rgba(0,0,0,0.7);
+padding:12px;
+border-radius:10px;
+color:white;
+width:220px;
+z-index:20;
+backdrop-filter:blur(4px);
+box-shadow:0 4px 16px rgba(0,0,0,0.25);
+}
+
+.batteryHeader{
+display:flex;
+justify-content:space-between;
+margin-bottom:6px;
+}
+
+.batteryBarBg{
+width:100%;
+height:12px;
+background:#333;
+border-radius:6px;
+overflow:hidden;
+}
+
+#batteryBar{
+height:100%;
+width:100%;
+background:linear-gradient(90deg,#00ff00,#ffff00,#ff0000);
+transition:width 0.3s;
+}
+
+/* =========================
+   ナビ矢印
+========================= */
+
+#navArrowWrap{
+position:fixed;
+top:84px;
+left:50%;
+transform:translateX(-50%);
+text-align:center;
+z-index:20;
+pointer-events:none;
+}
+
+#navArrow{
+width:0;
+height:0;
+border-left:18px solid transparent;
+border-right:18px solid transparent;
+border-bottom:55px solid rgba(255,255,255,0.9);
+filter:drop-shadow(0 3px 8px rgba(0,0,0,0.4));
+transition:transform 0.08s linear;
+}
+
+#navLabel{
+color:white;
+font-size:12px;
+margin-top:4px;
+text-shadow:0 2px 6px rgba(0,0,0,0.7);
+}
+
+/* =========================
+   ミニマップ
+========================= */
+
+#miniWrap{
+position:fixed;
+left:10px;
+bottom:10px;
+width:300px;
+background:rgba(0,0,0,0.72);
+color:white;
+border-radius:10px;
+overflow:hidden;
+z-index:20;
+backdrop-filter:blur(4px);
+box-shadow:0 4px 18px rgba(0,0,0,0.24);
+}
+
+#miniMap{
+height:200px;
+}
+
+.row{
+display:flex;
+gap:6px;
+padding:6px;
+}
+
+.row input,
+.row select,
+.row button{
+flex:1;
+min-width:0;
+}
+
+input,
+select,
+button{
+font:inherit;
+border:none;
+border-radius:6px;
+padding:8px 10px;
+box-sizing:border-box;
+}
+
+button{
+cursor:pointer;
+}
+
+/* =========================
+   タイトル画面
+========================= */
+
+.screen{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.85);
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+color:white;
+z-index:50;
+padding:20px;
+box-sizing:border-box;
+text-align:center;
+}
+
+.btn{
+padding:12px 26px;
+margin-top:12px;
+font-size:16px;
+min-width:220px;
+}
+
+.titleHelp{
+margin-top:20px;
+font-size:13px;
+line-height:1.7;
+opacity:0.85;
+max-width:720px;
+}
+
+.hide{
+display:none !important;
+}
+
+/* =========================
+   情報バブル
+========================= */
+
+#infoBubble{
+position:fixed;
+bottom:120px;
+left:50%;
+transform:translateX(-50%);
+background:rgba(0,0,0,0.72);
+color:white;
+padding:10px 16px;
+border-radius:8px;
+display:none;
+z-index:30;
+max-width:min(88vw, 460px);
+text-align:center;
+backdrop-filter:blur(4px);
+}
+
+#infoTitle{
+font-weight:700;
+margin-bottom:4px;
+}
+
+#infoBody{
+font-size:14px;
+line-height:1.5;
+}
+
+/* =========================
+   モバイル操作UI
+========================= */
+
+#mobileUI{
+position:fixed;
+left:0;
+right:0;
+bottom:0;
+display:none;
+justify-content:space-between;
+align-items:flex-end;
+padding:14px;
+box-sizing:border-box;
+z-index:25;
+pointer-events:none;
+gap:14px;
+}
+
+#mobileLeft,
+#mobileRight{
+pointer-events:none;
+}
+
+.mobileGrid{
+display:grid;
+grid-template-columns:repeat(3, 64px);
+grid-template-rows:repeat(2, 64px);
+gap:8px;
+pointer-events:auto;
+}
+
+.mBtn{
+width:64px;
+height:64px;
+border:none;
+border-radius:14px;
+background:rgba(0,0,0,0.58);
+color:#fff;
+font-weight:700;
+font-size:18px;
+backdrop-filter:blur(6px);
+box-shadow:0 4px 12px rgba(0,0,0,0.25);
+}
+
+.mBtn:active,
+.mBtn.active{
+transform:scale(0.96);
+background:rgba(255,255,255,0.22);
+}
+
+.mBtnTall{
+font-size:24px;
+}
+
+#touchPad{
+width:min(36vw, 180px);
+height:min(36vw, 180px);
+max-width:180px;
+max-height:180px;
+border-radius:22px;
+background:rgba(0,0,0,0.34);
+border:1px solid rgba(255,255,255,0.18);
+backdrop-filter:blur(6px);
+position:relative;
+pointer-events:auto;
+overflow:hidden;
+touch-action:none;
+box-shadow:0 4px 14px rgba(0,0,0,0.25);
+}
+
+#touchPadLabel{
+position:absolute;
+top:10px;
+left:0;
+right:0;
+text-align:center;
+font-size:12px;
+color:rgba(255,255,255,0.85);
+pointer-events:none;
+}
+
+#touchDot{
+position:absolute;
+width:26px;
+height:26px;
+border-radius:50%;
+background:rgba(0,232,255,0.95);
+box-shadow:0 0 14px rgba(0,232,255,0.8);
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+pointer-events:none;
+}
+
+/* =========================
+   タブレット/モバイル最適化
+========================= */
+
+@media (max-width: 1100px){
+#mobileUI{
+display:flex;
+}
+
+#miniWrap{
+width:260px;
+}
+
+#miniMap{
+height:170px;
+}
+
+#batteryBox{
+width:190px;
+right:14px;
+bottom:14px;
+}
+}
+
+@media (max-width: 900px){
+#hud{
+top:8px;
+gap:8px;
+}
+
+.panel{
+min-width:88px;
+padding:7px 10px;
+}
+
+.panel b{
+font-size:15px;
+}
+
+#navArrowWrap{
+top:104px;
+}
+
+#miniWrap{
+width:240px;
+left:8px;
+bottom:160px;
+}
+
+#miniMap{
+height:150px;
+}
+
+#batteryBox{
+right:8px;
+bottom:160px;
+width:170px;
+}
+
+.titleHelp{
+font-size:12px;
+}
+}
+
+@media (max-width: 640px){
+#hud{
+max-width:calc(100vw - 10px);
+gap:6px;
+}
+
+.panel{
+min-width:72px;
+padding:6px 8px;
+border-radius:7px;
+}
+
+.panel span{
+font-size:10px;
+}
+
+.panel b{
+font-size:13px;
+}
+
+#navArrow{
+border-left:14px solid transparent;
+border-right:14px solid transparent;
+border-bottom:42px solid rgba(255,255,255,0.92);
+}
+
+#navArrowWrap{
+top:94px;
+}
+
+#miniWrap{
+width:calc(100vw - 16px);
+left:8px;
+right:8px;
+bottom:160px;
+}
+
+#miniMap{
+height:130px;
+}
+
+#batteryBox{
+left:8px;
+right:8px;
+width:auto;
+bottom:110px;
+}
+
+.mobileGrid{
+grid-template-columns:repeat(3, 58px);
+grid-template-rows:repeat(2, 58px);
+gap:7px;
+}
+
+.mBtn{
+width:58px;
+height:58px;
+font-size:16px;
+border-radius:12px;
+}
+
+#touchPad{
+width:150px;
+height:150px;
+border-radius:20px;
+}
+
+#infoBubble{
+bottom:260px;
+}
+}
